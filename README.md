@@ -1,6 +1,7 @@
 # Work Request Tracker
 
 A full-stack work request management application built with **ASP.NET Core 8** (backend) and **Next.js 14** (frontend). Supports creating, filtering, searching, and tracking work requests with status updates and notes.
+<img width="1470" height="956" alt="Screenshot 2026-05-04 at 4 43 56 PM" src="https://github.com/user-attachments/assets/949c4c3a-c59e-4a7c-8d72-89a7b87db408" />
 
 ## Tech Stack
 
