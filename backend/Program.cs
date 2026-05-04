@@ -28,10 +28,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IWorkRequestRepository, WorkRequestRepository>();
 builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 
-// CORS for Next.js dev server
+// CORS — reads allowed origins from config (supports multiple env: local + Vercel)
+var allowedOrigins = builder.Configuration
+    .GetSection("AllowedOrigins")
+    .Get<string[]>() ?? ["http://localhost:3000"];
+
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()));
 
@@ -49,12 +53,16 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors();
 
-// Swagger (dev only)
-if (app.Environment.IsDevelopment())
+// Apply EF migrations automatically on startup
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
 }
+
+// Swagger (always on — useful for live demo)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
 app.MapControllers();
