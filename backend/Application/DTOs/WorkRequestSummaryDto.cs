@@ -1,0 +1,12 @@
+namespace WorkRequestTracker.Application.DTOs;
+
+public class WorkRequestSummaryDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string ClientName { get; set; } = string.Empty;
+    public string Priority { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public DateTimeOffset DueDate { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+}
